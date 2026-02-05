@@ -1,0 +1,22 @@
+asgiref==3.10.0
+chardet==5.2.0
+dj-database-url==3.1.0
+Django @ git+https://github.com/django/django.git@3939cd279569fde44f557d79f20bb5b1a02440af
+et_xmlfile==2.0.0
+gunicorn==24.1.1
+lxml==5.4.0
+numpy==2.2.5
+openpyxl==3.1.5
+packaging==26.0
+pandas==2.2.3
+pillow==11.2.1
+python-dateutil==2.9.0.post0
+python-docx==1.1.2
+pytz==2025.2
+reportlab==4.4.0
+six==1.17.0
+sqlparse==0.5.3
+tk==0.1.0
+typing_extensions==4.13.2
+tzdata==2025.2
+whitenoise==6.11.0
