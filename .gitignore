@@ -1,0 +1,30 @@
+# Base de datos SQLite
+*.db
+*.sqlite3
+db.sqlite3
+
+# Archivos de entorno virtual Python
+venv/
+env/
+.virtualenv/
+ENV/
+__pycache__/
+*.pyc
+
+# Archivos de Django
+media/
+staticfiles/
+local_settings.py
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log

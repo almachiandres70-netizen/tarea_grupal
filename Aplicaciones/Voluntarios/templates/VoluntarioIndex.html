@@ -1,0 +1,72 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<br>
+<div class="container">
+    <div class="table-responsive">
+        <div class="row mb-3">
+            <div class="col-12 text-start">
+                <h2 class="text-muted fs-2">Listado de Voluntarios</h2>
+
+                <a href="{% url 'nuevoVoluntario' %}" class="btn btn-success mt-2">
+                    <i class="fa fa-plus"></i> Nuevo Voluntario
+                </a>
+            </div>
+        </div>
+        <table id="tbl_voluntarios" class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Cédula</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th>Fecha Registro</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in voluntarios %}
+                <tr>
+                    <td>{{ v.id }}</td>
+                    <td>{{ v.cedula }}</td>
+                    <td>{{ v.nombres }}</td>
+                    <td>{{ v.apellidos }}</td>
+                    <td>{{ v.email }}</td>
+                    <td>{{ v.telefono }}</td>
+                    <td>{{ v.direccion }}</td>
+                    <td>{{ v.fecha_registro|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        <a href="{% url 'editarVoluntario' v.id %}" class="btn btn-outline-warning btn-sm">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                        <a href="{% url 'eliminarVoluntario' v.id %}" class="btn btn-outline-danger btn-sm"
+                           onclick="return confirm('¿Eliminar este voluntario?');">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+new DataTable('#tbl_voluntarios', {
+        layout: {
+            topStart: {
+                buttons: [
+                    { extend: 'copyHtml5', className: 'btn btn-secondary btn-sm' },
+                    { extend: 'excelHtml5', className: 'btn btn-success btn-sm' },
+                    { extend: 'csvHtml5', className: 'btn btn-info btn-sm' },
+                    { extend: 'pdfHtml5', className: 'btn btn-danger btn-sm' }
+                ]
+            }
+        }
+    });
+</script>
+
+{% endblock %}

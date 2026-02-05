@@ -1,0 +1,75 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4">
+                <h2 class="text-muted fs-4 text-center">Editar Inscripción</h2>
+
+                <form action="{% url 'actualizarInscripcion' %}" method="POST" enctype="multipart/form-data" id="frm_inscripcion_editar">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ inscripcion.id }}">
+
+                    <div class="mb-3">
+                        <label class="form-label">Voluntario</label>
+                        <select name="voluntario" class="form-select">
+                            <option value="">Seleccione</option>
+                            {% for v in voluntarios %}
+                                <option value="{{ v.id }}" {% if v.id == inscripcion.voluntario.id %}selected{% endif %}>
+                                    {{ v }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Actividad</label>
+                        <select name="actividad" class="form-select">
+                            <option value="">Seleccione</option>
+                            {% for a in actividades %}
+                                <option value="{{ a.id }}" {% if a.id == inscripcion.actividad.id %}selected{% endif %}>
+                                    {{ a }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Documento</label>
+                        <input type="file" name="documento_compromiso" class="form-control">
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <button class="btn btn-success btn-lg">Actualizar</button>
+                        <a href="{% url 'InscripcionIndex' %}" class="btn btn-secondary btn-lg">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(function(){
+    $("#frm_inscripcion_editar").validate({
+        rules:{
+            voluntario:{ required:true },
+            actividad:{ required:true },
+            documento:{ extension:"pdf|jpg|png" }
+        },
+        messages:{
+            voluntario:"Seleccione voluntario",
+            actividad:"Seleccione actividad",
+            documento:"Archivo inválido"
+        },
+        errorClass:"text-danger",
+        errorElement:"small",
+        highlight:e=>$(e).addClass("is-invalid"),
+        unhighlight:e=>$(e).removeClass("is-invalid")
+    });
+});
+</script>
+
+{% endblock %}

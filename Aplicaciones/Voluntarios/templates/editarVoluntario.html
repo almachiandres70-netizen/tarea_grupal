@@ -1,0 +1,146 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<br>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4">
+                <h2 class="text-muted fs-4 text-center">Editar Voluntario</h2>
+
+                <form action="{% url 'actualizarVoluntario' %}" method="POST" id="frm_voluntario_editar">
+                    {% csrf_token %}
+                    <input type="hidden" id="voluntario_id" name="voluntario_id" value="{{ voluntario.id }}">
+
+                    <div class="mb-3">
+                        <label class="form-label">Cédula</label>
+                        <input type="text" name="cedula" class="form-control" value="{{ voluntario.cedula }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nombres</label>
+                        <input type="text" name="nombres" class="form-control" value="{{ voluntario.nombres }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Apellidos</label>
+                        <input type="text" name="apellidos" class="form-control" value="{{ voluntario.apellidos }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" value="{{ voluntario.email }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Teléfono</label>
+                        <input type="text" name="telefono" class="form-control" value="{{ voluntario.telefono }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Dirección</label>
+                        <textarea name="direccion" class="form-control">{{ voluntario.direccion }}</textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fa fa-pencil"></i> Actualizar
+                        </button>
+                        <a href="{% url 'VoluntarioIndex' %}" class="btn btn-secondary btn-lg">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+
+    // ✨ Método para permitir solo letras
+    $.validator.addMethod("lettersOnly", function(value, element){
+        return this.optional(element) || /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/.test(value);
+    });
+    $("#frm_voluntario_editar").validate({
+        rules:{
+            cedula:{
+                required:true,
+                digits:true,
+                minlength:10,
+                maxlength:10,
+                remote:{
+                    url:"/verificar_cedula/",
+                    type:"get",
+                    data:{
+                        voluntario_id: function(){
+                            return $("#voluntario_id").val();
+                        }
+                    }
+                }
+            },
+            nombres:{
+                required:true,
+                lettersOnly:true
+            },
+            apellidos:{
+                required:true,
+                lettersOnly:true
+            },
+            email:{
+                required:true,
+                email:true,
+                remote:{
+                    url:"/verificar_email/",
+                    type:"get",
+                    data:{
+                        voluntario_id: function(){
+                            return $("#voluntario_id").val();
+                        }
+                    }
+                }
+            },
+            telefono:{
+                required:true,
+                digits:true,
+                minlength:10,
+                maxlength:10
+            },
+            direccion:{
+                required:true,
+                minlength:5
+            }
+        },
+        messages:{
+            cedula:{
+                required:"Ingrese la cédula",
+                digits:"Solo números",
+                minlength:"Debe tener 10 dígitos",
+                maxlength:"Debe tener 10 dígitos",
+                remote:"Esta cédula ya está registrada"
+            },
+            nombres:"Ingrese los nombres",
+            apellidos:"Ingrese los apellidos",
+            email:{
+                required:"Ingrese un email",
+                email:"Ingrese un email válido",
+                remote:"Este email ya está registrado"
+            },
+            telefono:{
+                required:"Ingrese el numero telefónico",
+                digits:"Solo números",
+                minlength:"Debe tener 10 dígitos",
+                maxlength:"Debe tener 10 dígitos"
+            },
+            direccion:"Ingrese la dirección"
+        },
+        errorClass:"text-danger",
+        errorElement:"small",
+        highlight:function(element){ $(element).addClass("is-invalid"); },
+        unhighlight:function(element){ $(element).removeClass("is-invalid"); }
+    });
+
+});
+</script>
+{% endblock %}

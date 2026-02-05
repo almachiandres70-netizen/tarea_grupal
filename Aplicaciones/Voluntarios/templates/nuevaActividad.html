@@ -1,0 +1,155 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<br>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-sm p-4">
+                <h2 class="text-muted fs-4 text-center">
+                    Registrar Actividad
+                </h2>
+
+                <form action="{% url 'guardarActividad' %}" method="post"enctype="multipart/form-data" id="frm_nueva_actividad">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label">Título</label>
+                        <input type="text" name="titulo" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <textarea name="descripcion" class="form-control"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" id="fecha" name="fecha" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Hora</label>
+                        <input type="time" name="hora" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Lugar</label>
+                        <input type="text" name="lugar" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Cupo Máximo</label>
+                        <input type="number" name="cupo_maximo" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Imagen</label>
+                        <input type="file" name="imagen" id="imagen" class="form-control">
+                        {% if a.imagen %}
+                            <img src="{{ a.imagen.url }}" class="img-thumbnail mt-2" width="150">
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <button class="btn btn-success btn-lg">
+                            Guardar
+                        </button>
+                        <a href="{% url 'ActividadIndex' %}"
+                           class="btn btn-secondary btn-lg">
+                            Cancelar
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+
+    $.validator.addMethod("tituloValido", function(value){
+        value = value.trim();
+        return value.length >= 5 && isNaN(value);
+    }, "Ingrese un título válido (mínimo 5 letras)");
+    // ✅ VALIDACIÓN FECHA = HOY (SIN PROBLEMAS DE HORA)
+    const hoy = new Date().toISOString().split('T')[0];
+
+    $.validator.addMethod("onlyToday", function(value){
+        return value === hoy;
+    }, "La fecha debe ser hoy");
+    $("#frm_nueva_actividad").validate({
+        rules:{
+            titulo:{
+                required:true,
+                tituloValido:true
+            },
+            descripcion:{
+                required:true,
+                minlength:10
+            },
+            fecha:{
+                required:true,
+                onlyToday:true
+            },
+            hora:{
+                required:true
+            },
+            lugar:{
+                required:true
+            },
+            cupo_maximo:{
+                required:true,
+                digits:true,
+                min:1,
+                max:20
+            },
+            imagen:{
+                extension:"jpg|jpeg|png"
+            }
+        },
+        messages:{
+            titulo:{
+                required:"El título es obligatorio",
+                tituloValido:"Debe tener al menos 5 letras y no ser solo números"
+            },
+            descripcion:"Llenar el campo",
+            fecha:{
+                required:"Llenar este campo",
+                onlyToday:"La fecha debe ser hoy"
+            },
+            hora:"Llenar este campo",
+            lugar:"Llenar este campo",
+            cupo_maximo:"Ingrese un número entre 1 y 20",
+            imagen:"Solo imágenes JPG o PNG"
+        },
+        errorClass:"text-danger",
+        errorElement:"small",
+        highlight:function(element){
+            $(element).addClass("is-invalid");
+        },
+        unhighlight:function(element){
+            $(element).removeClass("is-invalid");
+        }
+    });
+
+});
+</script>
+
+<script>
+        $("#imagen").fileinput({
+                language: "es",
+                allowedFileExtensions:["png|jpg|jpeg"],
+                showCaption:false,
+                dropZoneEnabled:true,
+                showClose:false
+            });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends './plantilla.html' %}
+{% block contenido %}
+
+<br>
+<h1 class="text-center mb-4 text-primary">Bienvenido al Sistema de Voluntariado</h1>
+
+<div class="row g-4">
+
+    <!-- Voluntarios -->
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm h-100 border-primary">
+            <div class="card-body">
+                <i class="fa fa-users fa-2x text-primary mb-2"></i>
+                <h5 class="card-title">Voluntarios</h5>
+                <p class="card-text">Gestiona y visualiza todos los voluntarios registrados en tus actividades.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actividades -->
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm h-100 border-success">
+            <div class="card-body">
+                <i class="fa fa-calendar-check fa-2x text-success mb-2"></i>
+                <h5 class="card-title">Actividades</h5>
+                <p class="card-text">Crea actividades con cupos limitados y muestra la información relevante.</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Inscripciones -->
+    <div class="col-md-4">
+        <div class="card text-center shadow-sm h-100 border-warning">
+            <div class="card-body">
+                <i class="fa fa-clipboard-list fa-2x text-warning mb-2"></i>
+                <h5 class="card-title">Inscripciones</h5>
+                <p class="card-text">Permite que los voluntarios se inscriban fácilmente y suban sus documentos de compromiso.</p>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-info mt-4" role="alert">
+        Próxima actividad: Taller de voluntariado el 15 de febrero.
+    </div>
+
+</div>
+
+<style>
+.card:hover {
+    transform: translateY(-5px);
+    transition: 0.3s;
+}
+</style>
+
+{% endblock %}
